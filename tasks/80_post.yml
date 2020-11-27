@@ -1,0 +1,15 @@
+- name: Prepare list of variable names to be deleted
+  set_fact:
+    role_app_docker_tmp_deletelist: '{{ lookup("varnames", role_name + "_tmp") }}'
+
+- name: Cleanup temporary variables
+  set_fact:
+    '{{ item }}': ''
+  loop: '{{ role_app_mysql_tmp_deletelist.split(",") }}'
+  when: role_app_docker_tmp_deletelist != []
+
+- name: Variables after cleanup
+  debug:
+    msg: '{{ lookup("vars", item) }}'
+  # loop: '{{ lookup("varnames", "^" + role_name).split(",") | reject("match", "^" + role_name + ".*vault") | list  }}'
+  loop: '{{ lookup("varnames", "^" + role_name).split(",") }}'

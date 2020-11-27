@@ -1,0 +1,7 @@
+role_app_docker_service: docker
+# role_app_docker_cnf_dir: empty
+role_app_docker_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+

@@ -1,0 +1,21 @@
+---
+- name: Gather OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}-{{ ansible_distribution_version}}.yml" # For OpenSuSE Leap ansible_distribution_major_version is NA
+    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version}}.yml"
+    - "{{ ansible_distribution }}.yml"
+  tags: always
+
+- name: Include OS independent variables.
+  include_vars: "vars/main.yml"
+
+- name: Some early tasks.
+  include: 10_pre.yml
+
+- name: Tasks that do not rely on service running.
+  include: 20_os.yml
+
+- name: Some late tasks.
+  include: 80_post.yml
+  tags: always
